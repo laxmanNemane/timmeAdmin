@@ -1,0 +1,22 @@
+const parentList  = [{"id":1,"firstName":"Mallorie","lastName":"Craigg","email":"mcraigg0@tamu.edu","mobileNumber":"1"},
+{"id":2,"firstName":"Verena","lastName":"Halfhead","email":"vhalfhead1@msu.edu","mobileNumber":"1"},
+{"id":3,"firstName":"Dev","lastName":"Reinbech","email":"dreinbech2@ca.gov","mobileNumber":"3"},
+{"id":4,"firstName":"Ulrikaumeko","lastName":"Capini","email":"ucapini3@usatoday.com","mobileNumber":"1"},
+{"id":5,"firstName":"Marillin","lastName":"Belderson","email":"mbelderson4@usgs.gov","mobileNumber":"1"},
+{"id":6,"firstName":"Valaree","lastName":"Breddy","email":"vbreddy5@jugem.jp","mobileNumber":"1"},
+{"id":7,"firstName":"Ogden","lastName":"Siderfin","email":"osiderfin6@ft.com","mobileNumber":"3"},
+{"id":8,"firstName":"Melonie","lastName":"Wykey","email":"mwykey7@jugem.jp","mobileNumber":"1"},
+{"id":9,"firstName":"Zacharias","lastName":"Bruckental","email":"zbruckental8@unblog.fr","mobileNumber":"3"},
+{"id":10,"firstName":"Udell","lastName":"Gilby","email":"ugilby9@addtoany.com","mobileNumber":"3"},
+{"id":11,"firstName":"Roy","lastName":"Barta","email":"rbartaa@exblog.jp","mobileNumber":"3"},
+{"id":12,"firstName":"Anestassia","lastName":"Jeanneau","email":"ajeanneaub@bandcamp.com","mobileNumber":"1"},
+{"id":13,"firstName":"Courtenay","lastName":"Skip","email":"cskipc@aboutads.info","mobileNumber":"1"},
+{"id":14,"firstName":"Clara","lastName":"Monier","email":"cmonierd@mapquest.com","mobileNumber":"1"},
+{"id":15,"firstName":"Tamma","lastName":"Sellner","email":"tsellnere@google.com.br","mobileNumber":"1"},
+{"id":16,"firstName":"Jeannine","lastName":"Eltun","email":"jeltunf@sitemeter.com","mobileNumber":"1"},
+{"id":17,"firstName":"Jeffry","lastName":"Bailes","email":"jbailesg@1688.com","mobileNumber":"3"},
+{"id":18,"firstName":"Pier","lastName":"Pedican","email":"ppedicanh@washington.edu","mobileNumber":"1"},
+{"id":19,"firstName":"Florry","lastName":"Searby","email":"fsearbyi@homestead.com","mobileNumber":"1"},
+{"id":20,"firstName":"Madelina","lastName":"Eim","email":"meimj@adobe.com","mobileNumber":"1"}]
+
+export default parentList;

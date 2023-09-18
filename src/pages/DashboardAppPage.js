@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { faker } from '@faker-js/faker';
+import { useSelector } from 'react-redux';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
@@ -27,6 +28,10 @@ import {
 export default function DashboardAppPage() {
   const theme = useTheme();
 
+  const { user } = useSelector((state) => state.AuthUser);
+
+  console.log(user, 'user');
+
   return (
     <>
       <Helmet>
@@ -35,7 +40,7 @@ export default function DashboardAppPage() {
 
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Hi, Welcome back
+          Hi, Welcome back {user?.first_name}
         </Typography>
 
         <Grid container spacing={3}>

@@ -16,6 +16,7 @@ import { FaChalkboardTeacher } from 'react-icons/fa';
 import { RiParentLine } from 'react-icons/ri';
 import React from 'react';
 import ExpertList from './ExpertList';
+import ParentList from './ParentList';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -29,7 +30,7 @@ function CustomTabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ p: 1 }}>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -107,7 +108,7 @@ const UserMainpage = () => {
               <ExpertList />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
-              <ExpertList />
+              <ParentList />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={2}>
               <ExpertList />
