@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { faker } from '@faker-js/faker';
 import { useSelector } from 'react-redux';
+import { useState } from 'react';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
@@ -27,10 +28,15 @@ import {
 
 export default function DashboardAppPage() {
   const theme = useTheme();
+  const [mainData, setMainData] = useState({
+    totalUsers: 80,
+    TotalExperts: 10,
+    totalParent: 25,
+    todatstudents: 45,
+    GraphData: [],
+  });
 
   const { user } = useSelector((state) => state.AuthUser);
-
-  console.log(user, 'user');
 
   return (
     <>
@@ -45,13 +51,17 @@ export default function DashboardAppPage() {
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Total Users" total={11} icon={<PiUsersThreeBold style={{ fontSize: '24px' }} />} />
+            <AppWidgetSummary
+              title="Total Users"
+              total={mainData?.totalUsers}
+              icon={<PiUsersThreeBold style={{ fontSize: '24px' }} />}
+            />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary
               title="Total Experts"
-              total={12}
+              total={mainData?.TotalExperts}
               color="info"
               icon={<FaChalkboardTeacher style={{ fontSize: '24px' }} />}
             />
@@ -60,7 +70,7 @@ export default function DashboardAppPage() {
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary
               title="Total Parents"
-              total={165}
+              total={mainData?.totalParent}
               color="warning"
               icon={<RiParentLine style={{ fontSize: '24px' }} />}
             />
@@ -69,7 +79,7 @@ export default function DashboardAppPage() {
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary
               title="Total Students"
-              total={234}
+              total={mainData?.todatstudents}
               color="error"
               icon={<PiStudentBold style={{ fontSize: '24px' }} />}
             />
