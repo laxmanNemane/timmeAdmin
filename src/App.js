@@ -9,6 +9,7 @@ import { StyledChart } from './components/chart';
 import ScrollToTop from './components/scroll-to-top';
 
 // ----------------------------------------------------------------------
+console.log(process.env.REACT_APP_BASE_URL, 'fsdfd');
 
 export default function App() {
   return (

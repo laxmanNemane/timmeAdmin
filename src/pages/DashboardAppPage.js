@@ -1,7 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import { faker } from '@faker-js/faker';
+
 import { useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
@@ -9,6 +10,7 @@ import { Grid, Container, Typography } from '@mui/material';
 import { PiUsersThreeBold, PiStudentBold } from 'react-icons/pi';
 import { FaChalkboardTeacher } from 'react-icons/fa';
 import { RiParentLine } from 'react-icons/ri';
+import { getDashbordData } from '../Axios/ApiCall';
 
 import Iconify from '../components/iconify';
 // sections
@@ -28,15 +30,13 @@ import {
 
 export default function DashboardAppPage() {
   const theme = useTheme();
-  const [mainData, setMainData] = useState({
-    totalUsers: 80,
-    TotalExperts: 10,
-    totalParent: 25,
-    todatstudents: 45,
-    GraphData: [],
-  });
+  const [mainData, setMainData] = useState();
 
   const { user } = useSelector((state) => state.AuthUser);
+
+  useEffect(() => {
+    getDashbordData().then((res) => setMainData(res.data));
+  }, []);
 
   return (
     <>
@@ -53,7 +53,7 @@ export default function DashboardAppPage() {
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary
               title="Total Users"
-              total={mainData?.totalUsers}
+              total={mainData?.users}
               icon={<PiUsersThreeBold style={{ fontSize: '24px' }} />}
             />
           </Grid>
@@ -61,7 +61,7 @@ export default function DashboardAppPage() {
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary
               title="Total Experts"
-              total={mainData?.TotalExperts}
+              total={mainData?.expert}
               color="info"
               icon={<FaChalkboardTeacher style={{ fontSize: '24px' }} />}
             />
@@ -70,7 +70,7 @@ export default function DashboardAppPage() {
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary
               title="Total Parents"
-              total={mainData?.totalParent}
+              total={mainData?.parent}
               color="warning"
               icon={<RiParentLine style={{ fontSize: '24px' }} />}
             />
@@ -79,7 +79,7 @@ export default function DashboardAppPage() {
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary
               title="Total Students"
-              total={mainData?.todatstudents}
+              total={mainData?.student}
               color="error"
               icon={<PiStudentBold style={{ fontSize: '24px' }} />}
             />

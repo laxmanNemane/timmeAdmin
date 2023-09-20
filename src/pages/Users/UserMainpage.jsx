@@ -17,6 +17,7 @@ import { RiParentLine } from 'react-icons/ri';
 import React from 'react';
 import ExpertList from './ExpertList';
 import ParentList from './ParentList';
+import StudentList from './StudentList';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -111,7 +112,7 @@ const UserMainpage = () => {
               <ParentList />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={2}>
-              <ExpertList />
+              <StudentList />
             </CustomTabPanel>
           </Box>
         </Card>

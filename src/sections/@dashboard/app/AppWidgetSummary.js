@@ -1,11 +1,7 @@
 // @mui
 import PropTypes from 'prop-types';
-import { alpha, styled } from '@mui/material/styles';
+import { alpha, styled, createTheme } from '@mui/material/styles';
 import { Card, Typography } from '@mui/material';
-// utils
-import { fShortenNumber } from '../../../utils/formatNumber';
-// components
-import Iconify from '../../../components/iconify';
 
 // ----------------------------------------------------------------------
 
@@ -31,7 +27,17 @@ AppWidgetSummary.propTypes = {
 };
 
 export default function AppWidgetSummary({ title, total, icon, color = 'primary', sx, ...other }) {
-  console.log(icon, 'icons');
+  // Create a Material-UI theme
+  const theme = createTheme();
+
+  // Access the color palette
+  const expertColor = theme.palette.expert;
+  const parentColor = theme.palette.parent;
+  const studentColor = theme.palette.student;
+
+  console.log('Primary Color:', expertColor);
+  console.log('Secondary Color:', studentColor);
+  console.log('Text Color:', parentColor);
   return (
     <Card
       sx={{

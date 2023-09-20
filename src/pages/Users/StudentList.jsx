@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
@@ -35,6 +35,7 @@ import { UserListHead, UserListToolbar } from '../../sections/@dashboard/user';
 
 // mock
 import USERLIST from '../../_mock/user';
+import { getStudentList } from '../../Axios/ApiCall';
 
 // ----------------------------------------------------------------------
 
@@ -43,7 +44,7 @@ const TABLE_HEAD = [
   { id: 'lastName', label: 'LastName', alignRight: false },
   { id: 'email', label: 'Email', alignRight: false },
   { id: 'mobileNumber', label: 'Mobile Number', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
+
   { id: '' },
 ];
 
@@ -73,9 +74,12 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    const returnData =
-      filter(array, (_user) => _user.firstName.toLowerCase().indexOf(query.toLowerCase()) !== -1) ||
-      filter(array, (_user) => _user.email.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    const returnData = array.filter(
+      (_user) =>
+        _user.firstName.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
+        _user.email.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
+        _user.mobileNumber.toLowerCase().indexOf(query.toLowerCase()) !== -1
+    );
     return returnData;
   }
   return stabilizedThis.map((el) => el[0]);
@@ -83,6 +87,7 @@ function applySortFilter(array, comparator, query) {
 
 const StudentList = () => {
   const [open, setOpen] = useState(null);
+  const [studentListData, setStudentListData] = useState([]);
 
   const [page, setPage] = useState(0);
 
@@ -95,6 +100,11 @@ const StudentList = () => {
   const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  // const expertlsit Api call
+  useEffect(() => {
+    getStudentList().then((res) => setStudentListData(res.data));
+  }, []);
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -112,7 +122,7 @@ const StudentList = () => {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.firstName);
+      const newSelecteds = studentListData.map((n) => n.firstName);
       setSelected(newSelecteds);
       return;
     }
@@ -148,9 +158,9 @@ const StudentList = () => {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - studentListData.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(studentListData, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
 
@@ -165,7 +175,7 @@ const StudentList = () => {
               order={order}
               orderBy={orderBy}
               headLabel={TABLE_HEAD}
-              rowCount={USERLIST.length}
+              rowCount={studentListData.length}
               numSelected={selected.length}
               onRequestSort={handleRequestSort}
               onSelectAllClick={handleSelectAllClick}
@@ -196,11 +206,6 @@ const StudentList = () => {
                     <TableCell align="left">{email}</TableCell>
 
                     <TableCell align="left">{mobileNumber}</TableCell>
-
-                    <TableCell align="left">
-                      {'helllo'}
-                      {/* <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label> */}
-                    </TableCell>
 
                     <TableCell align="right">
                       <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
@@ -247,7 +252,7 @@ const StudentList = () => {
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={USERLIST.length}
+        count={studentListData.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

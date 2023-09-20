@@ -1,29 +1,36 @@
+/* eslint-disable */
 import axios from 'axios';
 
+const Baseurl = process.env.REACT_APP_BASE_URL;
+
 // admin login
-export const loginAuth = async (params) => {
+export const loginAuth = async (body) => {
   try {
-    let Response = await axios.post(`users`, params, {
+    const res = await axios.post(`${Baseurl}/admin/login`, body, {
       headers: {
         'Content-Type': 'application/json',
       },
     });
-
-    return Response;
+    return res.data;
   } catch (error) {
-    return toast.error(`${error?.response?.data?.message}`, {
-      autoClose: 1000,
-    });
+    return error;
   }
 };
 
 // admin Logout
 export const authLogOut = async () => {
   try {
-    let res = await axios.put(`/users/logout`);
-    if (res.status === 200) {
-      return res;
-    }
+    const res = await axios.post(
+      `${Baseurl}/admin/logout`,
+      {},
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('user_token')}`,
+        },
+      }
+    );
+    return res.data;
   } catch (error) {
     return error;
   }
@@ -31,10 +38,17 @@ export const authLogOut = async () => {
 
 export const getDashbordData = async () => {
   try {
-    let res = await axios.get(`/getDashbordData`);
-    if (res.status === 200) {
-      return res.data.data;
-    }
+    const res = await axios.get(
+      `${Baseurl}/admin/totalCount`,
+
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('user_token')}`,
+        },
+      }
+    );
+    return res.data;
   } catch (error) {
     return error;
   }
@@ -43,10 +57,18 @@ export const getDashbordData = async () => {
 // expertList
 export const getExpertList = async () => {
   try {
-    let res = await axios.get(`/getDashbordData`);
-    if (res.status === 200) {
-      return res.data.data;
-    }
+    const res = await axios.get(
+      `${Baseurl}/admin/viewUsers`,
+
+      {
+        params: { type: 'expert' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('user_token')}`,
+        },
+      }
+    );
+    return res.data;
   } catch (error) {
     return error;
   }
@@ -56,10 +78,18 @@ export const getExpertList = async () => {
 
 export const getParentList = async () => {
   try {
-    let res = await axios.get(`/parnetList`);
-    if (res.status === 200) {
-      return res.data.data;
-    }
+    const res = await axios.get(
+      `${Baseurl}/admin/viewUsers`,
+
+      {
+        params: { type: 'parent' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('user_token')}`,
+        },
+      }
+    );
+    return res.data;
   } catch (error) {
     return error;
   }
@@ -68,11 +98,21 @@ export const getParentList = async () => {
 // studentList
 export const getStudentList = async () => {
   try {
-    let res = await axios.get(`/studentList`);
-    if (res.status === 200) {
-      return res.data.data;
-    }
+    const res = await axios.get(
+      `${Baseurl}/admin/viewUsers`,
+
+      {
+        params: { type: 'student' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('user_token')}`,
+        },
+      }
+    );
+    return res.data;
   } catch (error) {
     return error;
   }
 };
+
+/* eslint-enable */

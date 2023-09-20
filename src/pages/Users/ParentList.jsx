@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
@@ -34,7 +34,8 @@ import Iconify from '../../components/iconify';
 import { UserListHead, UserListToolbar } from '../../sections/@dashboard/user';
 
 // mock
-import parentList from '../../_mock/parentList';
+// import parentList from '../../_mock/parentList';
+import { getParentList } from '../../Axios/ApiCall';
 
 // ----------------------------------------------------------------------
 
@@ -43,7 +44,7 @@ const TABLE_HEAD = [
   { id: 'lastName', label: 'LastName', alignRight: false },
   { id: 'email', label: 'Email', alignRight: false },
   { id: 'mobileNumber', label: 'Mobile Number', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
+
   { id: '' },
 ];
 
@@ -86,6 +87,7 @@ function applySortFilter(array, comparator, query) {
 }
 
 const ParentList = () => {
+  const [parenListData, setParentList] = useState([]);
   const [open, setOpen] = useState(null);
 
   const [page, setPage] = useState(0);
@@ -108,6 +110,11 @@ const ParentList = () => {
     setOpen(null);
   };
 
+  // const expertlsit Api call
+  useEffect(() => {
+    getParentList().then((res) => setParentList(res.data));
+  }, []);
+
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -116,7 +123,7 @@ const ParentList = () => {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = parentList.map((n) => n.firstName);
+      const newSelecteds = parenListData.map((n) => n.firstName);
       setSelected(newSelecteds);
       return;
     }
@@ -152,9 +159,9 @@ const ParentList = () => {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - parentList.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - parenListData.length) : 0;
 
-  const filteredUsers = applySortFilter(parentList, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(parenListData, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
 
@@ -169,7 +176,7 @@ const ParentList = () => {
               order={order}
               orderBy={orderBy}
               headLabel={TABLE_HEAD}
-              rowCount={parentList.length}
+              rowCount={parenListData.length}
               numSelected={selected.length}
               onRequestSort={handleRequestSort}
               onSelectAllClick={handleSelectAllClick}
@@ -200,11 +207,6 @@ const ParentList = () => {
                     <TableCell align="left">{email}</TableCell>
 
                     <TableCell align="left">{mobileNumber}</TableCell>
-
-                    <TableCell align="left">
-                      {'helllo'}
-                      {/* <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label> */}
-                    </TableCell>
 
                     <TableCell align="right">
                       <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
@@ -251,7 +253,7 @@ const ParentList = () => {
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={parentList.length}
+        count={parenListData.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

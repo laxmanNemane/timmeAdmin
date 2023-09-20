@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
@@ -24,7 +24,7 @@ import {
   TablePagination,
   Box,
 } from '@mui/material';
-
+import { getExpertList } from '../../Axios/ApiCall';
 // components
 
 import Scrollbar from '../../components/scrollbar';
@@ -40,7 +40,6 @@ const TABLE_HEAD = [
   { id: 'lastName', label: 'LastName', alignRight: false },
   { id: 'email', label: 'Email', alignRight: false },
   { id: 'mobileNumber', label: 'Mobile Number', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
   { id: '' },
 ];
 
@@ -273,6 +272,11 @@ const ExpertList = () => {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  // const expertlsit Api call
+  useEffect(() => {
+    getExpertList().then((res) => setExpertData(res.data));
+  }, []);
+
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
   };
@@ -373,11 +377,6 @@ const ExpertList = () => {
                     <TableCell align="left">{email}</TableCell>
 
                     <TableCell align="left">{mobileNumber}</TableCell>
-
-                    <TableCell align="left">
-                      {'helllo'}
-                      {/* <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label> */}
-                    </TableCell>
 
                     <TableCell align="right">
                       <IconButton size="large" color="inherit" onClick={handleOpenMenu}>

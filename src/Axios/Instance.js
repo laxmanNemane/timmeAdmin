@@ -1,7 +1,6 @@
-// @ts-nocheck
+/* eslint-disable */
 import axios from 'axios';
-
-export const inializeAxios = () => {
+const inializeAxios = () => {
   const showLoaderEvent = new Event('showLoader', { bubbles: true });
   const hideLoaderEvent = new Event('hideLoader', { bubbles: true });
   let numberOfApiCallsPending = 0;
@@ -18,16 +17,8 @@ export const inializeAxios = () => {
       document.dispatchEvent(showLoaderEvent);
     }
 
-    const token = localStorage.getItem('access_token');
-    // console.log(new URL(req.url).host.split(':')[0]);
-    // console.log(window.location.host.split('.'));
-    // console.log(token);
-    if (token && API_ENDPOINTS.HOSTS_NEEDS_TOKEN.includes(new URL(req.url).host.split(':')[0])) {
-      req.headers.authorization = `JWT ${token}`;
-    }
-    if (API_ENDPOINTS.HOSTS_NEEDS_TOKEN.includes(new URL(req.url).host.split(':')[0])) {
-      [req.headers.org] = window.location.host.split('.');
-    }
+    const token = localStorage.getItem('user_token');
+
     return req;
   });
 
@@ -60,3 +51,5 @@ export const inializeAxios = () => {
   );
 };
 export default inializeAxios;
+
+/* eslint-enable */

@@ -35,12 +35,12 @@ const SECONDARY = {
 };
 
 const INFO = {
-  lighter: '#D0F2FF',
-  light: '#74CAFF',
-  main: '#1890FF',
-  dark: '#0C53B7',
-  darker: '#04297A',
-  contrastText: '#fff',
+  lighter: '#f6a16152',
+  light: '#FF824A',
+  main: '#F48A3A', // Set the main color to F48A3A
+  dark: '#B56428',
+  darker: '#c36e2e',
+  contrastText: GREY[800],
 };
 
 const SUCCESS = {
@@ -53,20 +53,20 @@ const SUCCESS = {
 };
 
 const WARNING = {
-  lighter: '#FFF7CD',
-  light: '#FFE16A',
-  main: '#FFC107',
-  dark: '#B78103',
-  darker: '#7A4F01',
+  lighter: '#E8CBFF',
+  light: '#D2A2FF',
+  main: '#925ACC', // Set the main color to 925ACC
+  dark: '#60387A',
+  darker: '#381C4B',
   contrastText: GREY[800],
 };
 
 const ERROR = {
-  lighter: '#FFE7D9',
-  light: '#FFA48D',
-  main: '#FF4842',
-  dark: '#B72136',
-  darker: '#7A0C2E',
+  lighter: '#86b1fb5e',
+  light: '#7B82F7',
+  main: '#357df9', // Set the main color to 5666F7
+  dark: '#3743B7',
+  darker: '#2558ae',
   contrastText: '#fff',
 };
 
@@ -79,6 +79,7 @@ const palette = {
   warning: WARNING,
   error: ERROR,
   grey: GREY,
+
   divider: alpha(GREY[500], 0.24),
   text: {
     primary: GREY[800],

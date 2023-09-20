@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik'; // Import Formik
-import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox, Box } from '@mui/material';
+import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox, Box, Snackbar } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+import { loginAuth } from '../../../Axios/ApiCall';
 import Iconify from '../../../components/iconify';
+import inializeAxios from '../../../Axios/Instance';
 
 export default function LoginForm() {
   const navigate = useNavigate();
@@ -11,8 +13,17 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClick = (values) => {
-    console.log(values, 'values fot login');
-    navigate('/dashboard', { replace: true });
+    delete values.remember;
+    // inializeAxios();
+    console.log(values, 'values');
+    loginAuth(values).then((res) => {
+      console.log(res, 'res');
+      if (res.status === 200 && res.data?.roleId?.role === 'admin') {
+        localStorage.setItem('user', JSON.stringify(res.data));
+        localStorage.setItem('user_token', res?.data?.token);
+        navigate('/dashboard', { replace: true });
+      }
+    });
   };
 
   // Define form validation and initial values using Formik
