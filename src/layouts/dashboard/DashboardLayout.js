@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 // @mui
 import { styled } from '@mui/material/styles';
 //
@@ -34,6 +35,7 @@ const Main = styled('div')(({ theme }) => ({
 
 export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
+  const { user } = useSelector((state) => state.AuthUser);
 
   return (
     <StyledRoot>
@@ -41,9 +43,7 @@ export default function DashboardLayout() {
 
       <Nav openNav={open} onCloseNav={() => setOpen(false)} />
 
-      <Main>
-        <Outlet />
-      </Main>
+      <Main>{user.token ? <Outlet /> : <Navigate to="/" />}</Main>
     </StyledRoot>
   );
 }

@@ -19,9 +19,8 @@ export default function Router() {
       path: '/',
       element: <SimpleLayout />, // Use SimpleLayout for the root route
       children: [
-        { path: '', element: <LoginPage /> }, // Login page is the initial landing page
-        // Redirect to '/dashboard' after successful login
-        // { path: 'dashboard', element: <Navigate to="/dashboard/app" /> },
+        { path: '/', element: <LoginPage /> }, // Login page is the initial landing page
+
         { path: '404', element: <Page404 /> },
         { path: '*', element: <Navigate to="/404" /> },
       ],
