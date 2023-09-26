@@ -10,7 +10,7 @@ import { Grid, Container, Typography } from '@mui/material';
 import { PiUsersThreeBold, PiStudentBold } from 'react-icons/pi';
 import { FaChalkboardTeacher } from 'react-icons/fa';
 import { RiParentLine } from 'react-icons/ri';
-import { getDashbordData } from '../Axios/ApiCall';
+import { getDashboardGraphData, getDashbordData } from '../Axios/ApiCall';
 
 import Iconify from '../components/iconify';
 // sections
@@ -31,12 +31,33 @@ import {
 export default function DashboardAppPage() {
   const theme = useTheme();
   const [mainData, setMainData] = useState();
+  const [graphData, setGraphData] = useState([]);
 
   const { user } = useSelector((state) => state.AuthUser);
 
   useEffect(() => {
     getDashbordData().then((res) => setMainData(res.data));
+    getDashboardGraphData().then((res) => {
+      const currentDate = new Date();
+      const currentMonth = currentDate.getMonth() + 1; // Get the current month (1-based)
+
+      const NewArray = Array.from({ length: 12 }, (_, i) => {
+        const month = i + 1;
+        const count = month <= currentMonth ? 0 : null;
+
+        const foundData = res.data?.find((item) => item.month === month);
+
+        return {
+          month,
+          count: foundData ? foundData.count : count,
+        };
+      });
+
+      setGraphData(NewArray);
+    });
   }, []);
+
+  console.log(graphData, 'graphData');
 
   return (
     <>
@@ -46,7 +67,7 @@ export default function DashboardAppPage() {
 
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Hi, Welcome back {user?.first_name}
+          Hi, Welcome Back {user?.first_name}
         </Typography>
 
         <Grid container spacing={3}>
@@ -80,35 +101,23 @@ export default function DashboardAppPage() {
             <AppWidgetSummary
               title="Total Students"
               total={mainData?.student}
-              color="error"
+              color="success"
               icon={<PiStudentBold style={{ fontSize: '24px' }} />}
             />
           </Grid>
 
           <Grid item xs={12} md={12} lg={12}>
             <AppWebsiteVisits
-              title="Website Download"
+              title="Community Expansion Report"
               subheader=""
-              chartLabels={[
-                '01/01/2003',
-                '02/01/2003',
-                '03/01/2003',
-                '04/01/2003',
-                '05/01/2003',
-                '06/01/2003',
-                '07/01/2003',
-                '08/01/2003',
-                '09/01/2003',
-                '10/01/2003',
-                '11/01/2003',
-              ]}
+              chartLabels={Array.from({ length: 12 }, (_, i) => `0${i + 1}/01/2023`)}
               chartData={[
                 {
-                  name: 'Users',
+                  name: 'Users Added',
                   type: 'line',
                   fill: 'solid',
                   color: '#3B7D10',
-                  data: [5, 15, 26, 30, 25, 28, 28, 20, 32, 32, 40],
+                  data: graphData?.map((item) => item.count),
                 },
               ]}
             />

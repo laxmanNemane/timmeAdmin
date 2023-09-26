@@ -32,6 +32,5 @@ export function fData(number) {
 
 function result(format, key = '.00') {
   const isInteger = format.includes(key);
-
   return isInteger ? format.replace(key, '') : format;
 }

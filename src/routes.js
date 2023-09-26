@@ -16,29 +16,27 @@ import UserMainpage from './pages/Users/UserMainpage';
 export default function Router() {
   const routes = useRoutes([
     {
-      path: 'login',
-      element: <LoginPage />,
+      path: '/',
+      element: <SimpleLayout />, // Use SimpleLayout for the root route
+      children: [
+        { path: '', element: <LoginPage /> }, // Login page is the initial landing page
+        // Redirect to '/dashboard' after successful login
+        // { path: 'dashboard', element: <Navigate to="/dashboard/app" /> },
+        { path: '404', element: <Page404 /> },
+        { path: '*', element: <Navigate to="/404" /> },
+      ],
     },
     {
       path: '/dashboard',
       element: <DashboardLayout />,
       children: [
-        { element: <Navigate to="/dashboard/app" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'user', element: <UserMainpage /> },
         { path: 'products', element: <UserMainpage /> },
         { path: 'blog', element: <BlogPage /> },
       ],
     },
-
-    {
-      element: <SimpleLayout />,
-      children: [
-        { element: <Navigate to="/dashboard/app" />, index: true },
-        { path: '404', element: <Page404 /> },
-        { path: '*', element: <Navigate to="/404" /> },
-      ],
-    },
+    // Handle the 404 page and any other unmatched routes
     {
       path: '*',
       element: <Navigate to="/404" replace />,

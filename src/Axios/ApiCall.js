@@ -54,6 +54,25 @@ export const getDashbordData = async () => {
   }
 };
 
+export const getDashboardGraphData = async () => {
+  try {
+    const res = await axios.get(
+      `${Baseurl}/admin/graphUsersCount`,
+
+      {
+        params: { year: '2023' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('user_token')}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};
+
 // expertList
 export const getExpertList = async () => {
   try {
@@ -109,6 +128,21 @@ export const getStudentList = async () => {
         },
       }
     );
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const deleteUser = async (userIds) => {
+  try {
+    const res = await axios.delete(`${Baseurl}/admin/deleteUser`, {
+      data: { users: userIds }, // Pass the object with the 'users' property
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('user_token')}`,
+      },
+    });
     return res.data;
   } catch (error) {
     return error;

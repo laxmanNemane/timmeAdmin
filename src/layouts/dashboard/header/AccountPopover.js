@@ -41,7 +41,7 @@ export default function AccountPopover() {
     // setOpen(null);
     authLogOut().then((res) => {
       if (res.status === 200) {
-        navigate('/login');
+        navigate('/');
         localStorage.clear();
       }
     });

@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 // @mui
 import { styled, alpha } from '@mui/material/styles';
-import { Toolbar, Tooltip, IconButton, Typography, OutlinedInput, InputAdornment } from '@mui/material';
+import { Toolbar, Tooltip, IconButton, Typography, OutlinedInput, InputAdornment, Alert } from '@mui/material';
 // component
 import Iconify from '../../../components/iconify';
+import { deleteUser } from '../../../Axios/ApiCall';
 
 // ----------------------------------------------------------------------
 
@@ -36,9 +37,30 @@ UserListToolbar.propTypes = {
   numSelected: PropTypes.number,
   filterName: PropTypes.string,
   onFilterName: PropTypes.func,
+  setUserData: PropTypes.func,
 };
 
-export default function UserListToolbar({ numSelected, filterName, onFilterName }) {
+export default function UserListToolbar({
+  numSelected,
+  filterName,
+  onFilterName,
+  selectedUser,
+  setSlectedUser,
+  userData,
+  setUserData,
+}) {
+  const OnDeleteHandler = () => {
+    deleteUser(selectedUser).then((res) => {
+      if (res.status === 200) {
+        const NewUsserDaata = userData.filter((item) => {
+          return !selectedUser.includes(item?._id);
+        });
+
+        setSlectedUser([]);
+        setUserData(NewUsserDaata);
+      }
+    });
+  };
   return (
     <StyledRoot
       sx={{
@@ -65,16 +87,10 @@ export default function UserListToolbar({ numSelected, filterName, onFilterName 
         />
       )}
 
-      {numSelected > 0 ? (
+      {numSelected > 0 && (
         <Tooltip title="Delete">
-          <IconButton>
+          <IconButton onClick={() => OnDeleteHandler()}>
             <Iconify icon="eva:trash-2-fill" />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <Iconify icon="ic:round-filter-list" />
           </IconButton>
         </Tooltip>
       )}

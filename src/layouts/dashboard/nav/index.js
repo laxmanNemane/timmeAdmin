@@ -49,6 +49,8 @@ export default function Nav({ openNav, onCloseNav }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
+  console.log(user, 'user');
+
   const renderContent = (
     <Scrollbar
       sx={{

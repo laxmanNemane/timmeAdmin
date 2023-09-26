@@ -70,7 +70,7 @@ export default function LoginPage() {
         <Container maxWidth="sm">
           <StyledContent>
             <Typography variant="h4" gutterBottom sx={{ mb: 5 }}>
-              Sign in to TimeMe Admin
+              TimeMe Admin Access Portal
             </Typography>
 
             {/* <Typography variant="body2" sx={{ mb: 5 }}>

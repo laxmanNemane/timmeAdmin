@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik'; // Import Formik
 import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox, Box, Snackbar } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { loginAuth } from '../../../Axios/ApiCall';
 import Iconify from '../../../components/iconify';
 import inializeAxios from '../../../Axios/Instance';
+import { LogIn } from '../../../Store/Slices/AuthSlice';
 
 export default function LoginForm() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -21,7 +24,8 @@ export default function LoginForm() {
       if (res.status === 200 && res.data?.roleId?.role === 'admin') {
         localStorage.setItem('user', JSON.stringify(res.data));
         localStorage.setItem('user_token', res?.data?.token);
-        navigate('/dashboard', { replace: true });
+        dispatch(LogIn(res.data));
+        navigate('/dashboard/app', { replace: true });
       }
     });
   };
@@ -38,7 +42,9 @@ export default function LoginForm() {
       const errors = {};
 
       if (!values.email) {
-        errors.email = 'Email is required';
+        errors.email = 'Required';
+      } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+        errors.email = 'Invalid email address';
       }
 
       if (!values.password) {
@@ -57,7 +63,7 @@ export default function LoginForm() {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Stack spacing={3}>
+      <Stack spacing={3} sx={{ mb: 3 }}>
         <TextField
           name="email"
           label="Email address"
@@ -89,7 +95,7 @@ export default function LoginForm() {
         />
       </Stack>
 
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
+      {/* <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
         <Box>
           <Checkbox
             name="remember"
@@ -102,7 +108,7 @@ export default function LoginForm() {
         <Link variant="subtitle2" underline="hover">
           Forgot password?
         </Link>
-      </Stack>
+      </Stack> */}
 
       <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={formik.handleSubmit}>
         Login
