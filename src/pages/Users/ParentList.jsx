@@ -23,6 +23,11 @@ import {
   TableContainer,
   TablePagination,
   Box,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from '@mui/material';
 
 // components
@@ -94,6 +99,10 @@ const ParentList = () => {
 
   const [order, setOrder] = useState('asc');
   const [deleteSingleElement, setDeleteSingleElement] = useState('');
+
+  const [openDiaolge, setOpenDialoage] = useState(false);
+
+  const [allRecordsDeleteOpen, setAllRecordsOpen] = useState(false);
 
   const [selected, setSelected] = useState([]);
 
@@ -168,7 +177,17 @@ const ParentList = () => {
 
   const isNotFound = !filteredUsers?.length && !!filterName;
 
-  const deleteHanlder = () => {
+
+  const takeConfirmationforDelete = () => {
+    setOpenDialoage(true);
+  };
+
+  const handleClose = () => {
+    setOpenDialoage(false)
+  }
+
+
+  const deleteRecords = () => {
     if (deleteSingleElement) {
       const Data = [deleteSingleElement];
       deleteUser(Data).then((res) => {
@@ -178,6 +197,7 @@ const ParentList = () => {
           });
           setDeleteSingleElement();
           setOpen(null);
+          setOpenDialoage(false);
           setParentList(NewUsserDaata);
         }
       });
@@ -194,6 +214,9 @@ const ParentList = () => {
         setUserData={setParentList}
         filterName={filterName}
         onFilterName={handleFilterByName}
+        allRecordsDeleteOpen={allRecordsDeleteOpen}
+        setAllRecordsOpen={setAllRecordsOpen}
+        deleteuserRole={'Parent'}
       />
 
       <Scrollbar>
@@ -310,11 +333,34 @@ const ParentList = () => {
           Edit
         </MenuItem> */}
 
-        <MenuItem sx={{ color: 'error.main' }} onClick={deleteHanlder}>
+        <MenuItem sx={{ color: 'error.main' }} onClick={takeConfirmationforDelete}>
           <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
           Delete
         </MenuItem>
       </Popover>
+
+
+      <Dialog
+        open={openDiaolge}
+        // onClose={handleClose}
+        // PaperComponent={PaperComponent}
+        aria-labelledby="draggable-dialog-title"
+      >
+        <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
+          Delete Confirmation!
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>Are you sure you want to delete this parent record?</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button sx={{ color: 'error.main' }} onClick={deleteRecords}>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

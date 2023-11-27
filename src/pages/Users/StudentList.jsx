@@ -23,6 +23,11 @@ import {
   TableContainer,
   TablePagination,
   Box,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from '@mui/material';
 
 // components
@@ -88,6 +93,9 @@ function applySortFilter(array, comparator, query) {
 const StudentList = () => {
   const [open, setOpen] = useState(null);
   const [studentListData, setStudentListData] = useState([]);
+  const [openDiaolge, setOpenDialoage] = useState(false);
+
+  const [allRecordsDeleteOpen, setAllRecordsOpen] = useState(false);
 
   const [page, setPage] = useState(0);
 
@@ -167,7 +175,11 @@ const StudentList = () => {
 
   const isNotFound = !filteredUsers?.length && !!filterName;
 
-  const deleteHanlder = () => {
+  const takeConfirmationforDelete = () => {
+    setOpenDialoage(true);
+  };
+
+  const deleteRecords = () => {
     if (deleteSingleElement) {
       const Data = [deleteSingleElement];
       deleteUser(Data).then((res) => {
@@ -177,10 +189,15 @@ const StudentList = () => {
           });
           setDeleteSingleElement();
           setOpen(null);
+          setOpenDialoage(false);
           setStudentListData(NewUsserDaata);
         }
       });
     }
+  };
+
+  const handleClose = () => {
+    setOpenDialoage(false);
   };
 
   return (
@@ -193,6 +210,9 @@ const StudentList = () => {
         setUserData={setStudentListData}
         filterName={filterName}
         onFilterName={handleFilterByName}
+        allRecordsDeleteOpen={allRecordsDeleteOpen}
+        setAllRecordsOpen={setAllRecordsOpen}
+        deleteuserRole={'Student'}
       />
 
       <Scrollbar>
@@ -309,11 +329,33 @@ const StudentList = () => {
           Edit
         </MenuItem> */}
 
-        <MenuItem sx={{ color: 'error.main' }} onClick={deleteHanlder}>
+        <MenuItem sx={{ color: 'error.main' }} onClick={takeConfirmationforDelete}>
           <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
           Delete
         </MenuItem>
       </Popover>
+
+      <Dialog
+        open={openDiaolge}
+        // onClose={handleClose}
+        // PaperComponent={PaperComponent}
+        aria-labelledby="draggable-dialog-title"
+      >
+        <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
+          Delete Confirmation!
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>Are you sure you want to delete this student record?</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button sx={{ color: 'error.main' }} onClick={deleteRecords}>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

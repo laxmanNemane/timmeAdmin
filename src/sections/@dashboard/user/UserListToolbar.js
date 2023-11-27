@@ -1,10 +1,25 @@
 import PropTypes from 'prop-types';
 // @mui
 import { styled, alpha } from '@mui/material/styles';
-import { Toolbar, Tooltip, IconButton, Typography, OutlinedInput, InputAdornment, Alert } from '@mui/material';
+import {
+  Toolbar,
+  Tooltip,
+  IconButton,
+  Typography,
+  OutlinedInput,
+  InputAdornment,
+  Alert,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button,
+} from '@mui/material';
 // component
 import Iconify from '../../../components/iconify';
 import { deleteUser } from '../../../Axios/ApiCall';
+// import logo from '../src/components/logo';
 
 // ----------------------------------------------------------------------
 
@@ -48,15 +63,29 @@ export default function UserListToolbar({
   setSlectedUser,
   userData,
   setUserData,
+  setAllRecordsOpen,
+  allRecordsDeleteOpen,
+  deleteuserRole,
 }) {
-  const OnDeleteHandler = () => {
+  const takeConfirmation = () => {
+    setAllRecordsOpen(true);
+  };
+
+  const deleteRecords = () => {};
+
+  const handleClose = () => {
+    setAllRecordsOpen(false);
+  };
+
+  const delteTheRecord = () => {
+    console.log('deleteRecord');
     deleteUser(selectedUser).then((res) => {
       if (res.status === 200) {
         const NewUsserDaata = userData.filter((item) => {
           return !selectedUser.includes(item?._id);
         });
-
         setSlectedUser([]);
+        setAllRecordsOpen(false);
         setUserData(NewUsserDaata);
       }
     });
@@ -89,11 +118,33 @@ export default function UserListToolbar({
 
       {numSelected > 0 && (
         <Tooltip title="Delete">
-          <IconButton onClick={() => OnDeleteHandler()}>
+          <IconButton onClick={() => takeConfirmation()}>
             <Iconify icon="eva:trash-2-fill" />
           </IconButton>
         </Tooltip>
       )}
+
+      <Dialog
+        open={allRecordsDeleteOpen}
+        // onClose={handleClose}
+        // PaperComponent={PaperComponent}
+        aria-labelledby="draggable-dialog-title"
+      >
+        <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
+          Delete Confirmation!
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>Are you sure you want to delete this {deleteuserRole} records?</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button sx={{ color: 'error.main' }} onClick={delteTheRecord}>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </StyledRoot>
   );
 }

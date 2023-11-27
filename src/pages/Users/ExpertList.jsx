@@ -24,6 +24,11 @@ import {
   TablePagination,
   Box,
   Alert,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from '@mui/material';
 import { deleteUser, getExpertList } from '../../Axios/ApiCall';
 // components
@@ -262,7 +267,9 @@ const ExpertList = () => {
   const [open, setOpen] = useState(null);
 
   const [deleteSingleElement, setDeleteSingleElement] = useState('');
+  const [openDiaolge, setOpenDialoage] = useState(false);
 
+  const [allRecordsDeleteOpen, setAllRecordsOpen] = useState(false);
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState('asc');
@@ -340,7 +347,19 @@ const ExpertList = () => {
 
   const isNotFound = !filteredUsers?.length && !!filterName;
 
-  const deleteHanlder = () => {
+
+  const takeConfirmationforDelete = () => {
+    setOpenDialoage(true);
+  };
+
+  const handleClose = () => {
+    setOpenDialoage(false)
+  }
+
+
+
+
+  const deleteRecords = () => {
     if (deleteSingleElement) {
       const Data = [deleteSingleElement];
       deleteUser(Data).then((res) => {
@@ -366,6 +385,9 @@ const ExpertList = () => {
         setUserData={setExpertData}
         filterName={filterName}
         onFilterName={handleFilterByName}
+        allRecordsDeleteOpen={allRecordsDeleteOpen}
+        setAllRecordsOpen={setAllRecordsOpen}
+        deleteuserRole={'Expert'}
       />
 
       <Scrollbar>
@@ -482,11 +504,32 @@ const ExpertList = () => {
           Edit
         </MenuItem> */}
 
-        <MenuItem sx={{ color: 'error.main' }} onClick={deleteHanlder}>
+        <MenuItem sx={{ color: 'error.main' }} onClick={takeConfirmationforDelete}>
           <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
           Delete
         </MenuItem>
       </Popover>
+      <Dialog
+        open={openDiaolge}
+        // onClose={handleClose}
+        // PaperComponent={PaperComponent}
+        aria-labelledby="draggable-dialog-title"
+      >
+        <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
+          Delete Confirmation!
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>Are you sure you want to delete this Expert record?</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button sx={{ color: 'error.main' }} onClick={deleteRecords}>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

@@ -13,7 +13,13 @@ const inializeAxios = () => {
   axios.interceptors.request.use((req) => {
     numberOfApiCallsPending += 1;
 
-    if (req.loader !== false) {
+    console.log(req, 'login');
+
+    if (
+      req.loader !== false &&
+      req.url !== `${process.env.REACT_APP_BASE_URL}/admin/login` &&
+      req.url === `${process.env.REACT_APP_BASE_URL}/admin/logout`
+    ) {
       document.dispatchEvent(showLoaderEvent);
     }
 
